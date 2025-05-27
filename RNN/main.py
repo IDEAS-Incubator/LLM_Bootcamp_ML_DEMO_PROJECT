@@ -2,7 +2,9 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, SimpleRNN, Dense, Dropout
+from tensorflow.keras.layers import Embedding, SimpleRNN, Dense, Dropout, BatchNormalization
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
@@ -10,7 +12,7 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 np.random.seed(42)
 tf.random.set_seed(42)
 
-# Download IMDB dataset from TensorFlow datasets
+# Download IMDB dataset
 print("Loading dataset...")
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.imdb.load_data(num_words=10000)
 
@@ -29,12 +31,12 @@ print(f"Label: {'Positive' if y_train[0] == 1 else 'Negative'}")
 # Parameters
 vocab_size = 10000
 max_length = 250
-embedding_dim = 128
-rnn_units = 64
+embedding_dim = 100
+rnn_units = 128
 batch_size = 64
 epochs = 5
 
-# Pad sequences to ensure consistent input shape
+# Pad sequences
 print("\nPreparing data...")
 x_train = pad_sequences(x_train, maxlen=max_length, padding='post', truncating='post')
 x_test = pad_sequences(x_test, maxlen=max_length, padding='post', truncating='post')
@@ -43,30 +45,57 @@ x_test = pad_sequences(x_test, maxlen=max_length, padding='post', truncating='po
 print(f"Training data shape: {x_train.shape}")
 print(f"Test data shape: {x_test.shape}")
 
-# Create validation split from training data
+# Create validation split
 x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
 print(f"Validation data shape: {x_val.shape}")
 
 # Build the RNN model
 print("\nBuilding RNN model...")
 model = Sequential([
-    Embedding(vocab_size, embedding_dim, input_length=max_length),
-    SimpleRNN(rnn_units, return_sequences=False),
+    Embedding(vocab_size, embedding_dim, mask_zero=True),
+    BatchNormalization(),
+    SimpleRNN(rnn_units, return_sequences=True, 
+              kernel_initializer='glorot_uniform',
+              recurrent_initializer='orthogonal'),
+    BatchNormalization(),
+    SimpleRNN(rnn_units//2,
+              kernel_initializer='glorot_uniform',
+              recurrent_initializer='orthogonal'),
+    BatchNormalization(),
+    Dense(64, activation='relu', kernel_initializer='he_normal'),
     Dropout(0.3),
-    Dense(32, activation='relu'),
+    Dense(32, activation='relu', kernel_initializer='he_normal'),
     Dropout(0.3),
     Dense(1, activation='sigmoid')
 ])
 
-# Compile the model
+# Compile the model with class weights
+total_samples = len(y_train)
+pos_samples = np.sum(y_train)
+neg_samples = total_samples - pos_samples
+class_weight = {
+    0: total_samples / (2 * neg_samples),
+    1: total_samples / (2 * pos_samples)
+}
+
 model.compile(
-    optimizer='adam',
+    optimizer=Adam(learning_rate=0.001),
     loss='binary_crossentropy',
     metrics=['accuracy']
 )
 
 # Model summary
 model.summary()
+
+# Define callbacks
+callbacks = [
+    ModelCheckpoint(
+        'best_rnn_model.keras',
+        monitor='val_accuracy',
+        save_best_only=True,
+        verbose=1
+    )
+]
 
 # Train the model
 print("\nTraining the model...")
@@ -75,13 +104,15 @@ history = model.fit(
     validation_data=(x_val, y_val),
     epochs=epochs,
     batch_size=batch_size,
+    callbacks=callbacks,
+    class_weight=class_weight,
     verbose=1
 )
 
 # Print training history
 print("\nTraining History:")
-for epoch in range(epochs):
-    print(f"Epoch {epoch+1}/{epochs}:")
+for epoch in range(len(history.history['loss'])):  # Use actual number of completed epochs
+    print(f"Epoch {epoch+1}/{len(history.history['loss'])}:")
     print(f"  Training Loss: {history.history['loss'][epoch]:.4f}")
     print(f"  Training Accuracy: {history.history['accuracy'][epoch]:.4f}")
     print(f"  Validation Loss: {history.history['val_loss'][epoch]:.4f}")

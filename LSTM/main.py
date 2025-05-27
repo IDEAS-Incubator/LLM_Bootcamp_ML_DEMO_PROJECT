@@ -50,7 +50,7 @@ print(f"Validation data shape: {x_val.shape}")
 # Build the LSTM model
 print("\nBuilding LSTM model...")
 model = Sequential([
-    Embedding(vocab_size, embedding_dim, input_length=max_length),
+    Embedding(vocab_size, embedding_dim),
     Bidirectional(LSTM(lstm_units, return_sequences=True, dropout=0.2, recurrent_dropout=0.2)),
     Bidirectional(LSTM(lstm_units//2, dropout=0.2, recurrent_dropout=0.2)),
     Dense(32, activation='relu'),

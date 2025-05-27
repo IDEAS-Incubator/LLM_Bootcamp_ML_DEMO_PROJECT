@@ -44,7 +44,7 @@ print("Building CNN model...")
 embedding_dim = 100  # Increased embedding dimension
 
 model = Sequential([
-    Embedding(max_words, embedding_dim, input_length=max_length),
+    Embedding(max_words, embedding_dim),
     Conv1D(128, 5, activation='relu'),  # More filters
     GlobalMaxPooling1D(),
     Dropout(0.4),  # Increased dropout for better regularization
