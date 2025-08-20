@@ -43,6 +43,13 @@ X_test_pad = pad_sequences(X_test_seq, maxlen=max_length, padding='post', trunca
 print("Building CNN model...")
 embedding_dim = 100  # Increased embedding dimension
 
+"""
+Embedding Layer: Converts word indices to dense vectors.
+Conv1D Layer: Learns local patterns in the text.
+GlobalMaxPooling1D: Reduces the sequence to a single vector.
+Dropout Layers: Prevents overfitting.
+Dense Layers: Adds non-linearity and outputs a single value with sigmoid activation (for binary classification).
+"""
 model = Sequential([
     Embedding(max_words, embedding_dim),
     Conv1D(128, 5, activation='relu'),  # More filters
