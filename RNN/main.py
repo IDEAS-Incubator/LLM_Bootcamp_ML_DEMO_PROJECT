@@ -14,6 +14,7 @@ tf.random.set_seed(42)
 
 # Download IMDB dataset
 print("Loading dataset...")
+
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.imdb.load_data(num_words=10000)
 
 # Get word index mapping
@@ -51,6 +52,14 @@ print(f"Validation data shape: {x_val.shape}")
 
 # Build the RNN model
 print("\nBuilding RNN model...")
+"""
+    Embedding Layer: Converts word indices to dense vectors.
+    BatchNormalization: Normalizes activations.
+    SimpleRNN Layers: Two stacked RNN layers to capture sequence information.
+    Dense Layers: For further feature extraction and non-linearity.
+    Dropout: Prevents overfitting.
+    Output Layer: Single neuron with sigmoid activation for binary classification.
+"""
 model = Sequential([
     Embedding(vocab_size, embedding_dim, mask_zero=True),
     BatchNormalization(),

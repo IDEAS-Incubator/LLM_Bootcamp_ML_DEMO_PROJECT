@@ -6,6 +6,12 @@ from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout, Bidirection
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
+"""
+An LSTM model (Long Short-Term Memory model) is a type of Recurrent Neural Network (RNN) 
+designed to learn from sequential data, such as text, time series, or speech. 
+LSTMs are especially good at capturing long-range dependencies and patterns in sequences, 
+which standard RNNs often struggle with due to the vanishing gradient problem.
+"""
 # Set random seed for reproducibility
 np.random.seed(42)
 tf.random.set_seed(42)
@@ -49,6 +55,13 @@ print(f"Validation data shape: {x_val.shape}")
 
 # Build the LSTM model
 print("\nBuilding LSTM model...")
+"""
+Embedding Layer: Converts word indices to dense vectors.
+Bidirectional LSTM Layers: Two stacked LSTM layers (the first returns sequences, the second does not), allowing the model to learn from both past and future context.
+Dense Layer: With ReLU activation for further feature extraction.
+Dropout Layer: Prevents overfitting.
+Output Layer: Single neuron with sigmoid activation for binary classification.
+"""
 model = Sequential([
     Embedding(vocab_size, embedding_dim),
     Bidirectional(LSTM(lstm_units, return_sequences=True, dropout=0.2, recurrent_dropout=0.2)),

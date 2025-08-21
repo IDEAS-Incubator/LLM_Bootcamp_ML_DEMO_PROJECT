@@ -81,6 +81,14 @@ def main():
 
     # Build Vanilla Deep Neural Network
     logging.info("\nBuilding Vanilla DNN model...")
+    """
+    Model Architecture:
+    Input layer for 28x28x1 images.
+    Flattens input.
+    Dense layer with 512 units (ReLU).
+    Dense layer with 256 units (Sigmoid).
+    Output layer with 10 units (Softmax for 10 classes).
+    """
     model = Sequential()
     model.add(tf.keras.Input(shape=(28, 28, 1, )))
     model.add(Flatten())
@@ -134,8 +142,18 @@ def main():
     plot_history(history, metrics=['loss', 'val_loss'], model_name='DNN')
     plot_history(history, metrics=['accuracy', 'val_accuracy'], model_name='DNN')
 
+    # End of DNN run
+
+    
     # Build CNN
     logging.info("\nBuilding CNN model...")
+    """
+    Input layer for 28x28x1 images.
+    Conv2D layer with 5 filters (3x3 kernel).
+    Flatten layer.
+    Dense layer with 128 units (ReLU).
+    Output layer with 10 units (Softmax).
+    """
     cnn = Sequential(name='cnn')
     cnn.add(tf.keras.Input(shape=(28, 28, 1, )))
     cnn.add(Conv2D(5, kernel_size=(3, 3)))
