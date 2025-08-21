@@ -109,3 +109,6 @@ site/
 # Tensorboard
 tensorboard/
 runs/
+
+
+plots/

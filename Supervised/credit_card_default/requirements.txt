@@ -1,0 +1,39 @@
+# Core data science packages
+pandas>=1.5.0
+numpy>=1.21.0
+scikit-learn>=1.1.0
+
+# Data pipeline dependencies
+requests>=2.31.0
+
+# Visualization packages
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Model persistence
+joblib>=1.1.0
+
+# Additional ML packages (optional but recommended)
+xgboost>=1.6.0
+lightgbm>=3.3.0
+catboost>=1.1.0
+
+# Data preprocessing and feature engineering
+scipy>=1.9.0
+imbalanced-learn>=0.9.0
+
+# Statistical analysis
+statsmodels>=0.13.0
+
+# Jupyter notebook support (optional)
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# Development and testing
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.0.0
