@@ -178,6 +178,7 @@ class EnhancedCreditCardDefaultDetector:
             Tuple of (X_train, y_train, X_val, y_val)
         """
         logger.info("Preparing data for training...")
+        logger.debug(f"=" * 100)
 
         # Separate features and target
         X = self.train_data[self.feature_vars].copy()
@@ -223,6 +224,7 @@ class EnhancedCreditCardDefaultDetector:
         y_train: pd.Series,
         X_val: pd.DataFrame,
         y_val: pd.Series,
+        use_grid_search: bool = True,
     ) -> Dict[str, Dict[str, float]]:
         """
         Build and evaluate multiple machine learning models.
@@ -230,11 +232,13 @@ class EnhancedCreditCardDefaultDetector:
         Args:
             X_train, y_train: Training data
             X_val, y_val: Validation data
+            use_grid_search: Whether to use grid search for hyperparameter tuning
 
         Returns:
             Dict containing model metrics
         """
         logger.info("Building multiple machine learning models...")
+        logger.debug(f"=" * 100)
 
         # Build baseline Random Forest model
         baseline_rf_metrics = self._build_baseline_model(X_train, y_train, X_val, y_val)
@@ -243,43 +247,50 @@ class EnhancedCreditCardDefaultDetector:
         models_metrics = {}
         models_metrics["Random_Forest_Baseline"] = baseline_rf_metrics
 
-        # Random Forest with Grid Search
-        rf_metrics = self._build_random_forest(X_train, y_train, X_val, y_val)
-        if rf_metrics:
-            models_metrics["Random_Forest_Optimized"] = rf_metrics
-            self.models["Random_Forest_Optimized"] = self.models.get(
-                "Random_Forest_Optimized"
-            )
+        if use_grid_search:
+            # Random Forest with Grid Search
+            rf_metrics = self._build_random_forest(X_train, y_train, X_val, y_val)
+            if rf_metrics:
+                models_metrics["Random_Forest_Optimized"] = rf_metrics
+                self.models["Random_Forest_Optimized"] = self.models.get(
+                    "Random_Forest_Optimized"
+                )
 
-        # KNN
-        knn_metrics = self._build_knn(X_train, y_train, X_val, y_val)
-        if knn_metrics:
-            models_metrics["KNN"] = knn_metrics
-            self.models["KNN"] = self.models.get("KNN")
+            # KNN
+            knn_metrics = self._build_knn(X_train, y_train, X_val, y_val)
+            if knn_metrics:
+                models_metrics["KNN"] = knn_metrics
+                self.models["KNN"] = self.models.get("KNN")
 
-        # Logistic Regression
-        lr_metrics = self._build_logistic_regression(X_train, y_train, X_val, y_val)
-        if lr_metrics:
-            models_metrics["Logistic_Regression"] = lr_metrics
-            self.models["Logistic_Regression"] = self.models.get("Logistic_Regression")
+            # Logistic Regression
+            lr_metrics = self._build_logistic_regression(X_train, y_train, X_val, y_val)
+            if lr_metrics:
+                models_metrics["Logistic_Regression"] = lr_metrics
+                self.models["Logistic_Regression"] = self.models.get(
+                    "Logistic_Regression"
+                )
 
-        # Gradient Boosting
-        gb_metrics = self._build_gradient_boosting(X_train, y_train, X_val, y_val)
-        if gb_metrics:
-            models_metrics["Gradient_Boosting"] = gb_metrics
-            self.models["Gradient_Boosting"] = self.models.get("Gradient_Boosting")
+            # Gradient Boosting
+            gb_metrics = self._build_gradient_boosting(X_train, y_train, X_val, y_val)
+            if gb_metrics:
+                models_metrics["Gradient_Boosting"] = gb_metrics
+                self.models["Gradient_Boosting"] = self.models.get("Gradient_Boosting")
 
-        # SVM
-        svm_metrics = self._build_svm(X_train, y_train, X_val, y_val)
-        if svm_metrics:
-            models_metrics["SVM"] = svm_metrics
-            self.models["SVM"] = self.models.get("SVM")
+            # SVM
+            svm_metrics = self._build_svm(X_train, y_train, X_val, y_val)
+            if svm_metrics:
+                models_metrics["SVM"] = svm_metrics
+                self.models["SVM"] = self.models.get("SVM")
 
-        # Build ensemble
-        ensemble_metrics = self._build_ensemble(X_train, y_train, X_val, y_val)
-        if ensemble_metrics:
-            models_metrics["Ensemble"] = ensemble_metrics
-            self.models["Ensemble"] = self.models.get("Ensemble")
+            # Build ensemble
+            ensemble_metrics = self._build_ensemble(X_train, y_train, X_val, y_val)
+            if ensemble_metrics:
+                models_metrics["Ensemble"] = ensemble_metrics
+                self.models["Ensemble"] = self.models.get("Ensemble")
+        else:
+            logger.info("Skipping grid search - using baseline models only")
+            # Use baseline models for faster execution
+            models_metrics["Random_Forest_Baseline"] = baseline_rf_metrics
 
         return models_metrics
 
@@ -292,7 +303,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> Dict[str, float]:
         """Build and evaluate baseline Random Forest model."""
         logger.info("Building baseline Random Forest model...")
-
+        logger.debug(f"=" * 100)
         baseline_rf = RandomForestClassifier(
             n_estimators=100, random_state=config.RANDOM_STATE, class_weight="balanced"
         )
@@ -318,7 +329,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> Dict[str, float]:
         """Build and evaluate optimized Random Forest model."""
         logger.info("Building optimized Random Forest model...")
-
+        logger.debug(f"=" * 100)
         rf = RandomForestClassifier(
             random_state=config.RANDOM_STATE, class_weight="balanced"
         )
@@ -344,7 +355,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> Dict[str, float]:
         """Build and evaluate KNN model."""
         logger.info("Building KNN model...")
-
+        logger.debug(f"=" * 100)
         knn = KNeighborsClassifier()
         grid_search = self._perform_grid_search(
             knn, config.KNN_PARAMS, X_train, y_train
@@ -368,7 +379,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> Dict[str, float]:
         """Build and evaluate Logistic Regression model."""
         logger.info("Building Logistic Regression model...")
-
+        logger.debug(f"=" * 100)
         lr = LogisticRegression(
             random_state=config.RANDOM_STATE, class_weight="balanced"
         )
@@ -392,7 +403,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> Dict[str, float]:
         """Build and evaluate Gradient Boosting model."""
         logger.info("Building Gradient Boosting model...")
-
+        logger.debug(f"=" * 100)
         gb = GradientBoostingClassifier(random_state=config.RANDOM_STATE)
         grid_search = self._perform_grid_search(gb, config.GB_PARAMS, X_train, y_train)
 
@@ -414,7 +425,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> Dict[str, float]:
         """Build and evaluate SVM model."""
         logger.info("Building SVM model...")
-
+        logger.debug(f"=" * 100)
         svm = SVC(
             random_state=config.RANDOM_STATE, class_weight="balanced", probability=True
         )
@@ -440,7 +451,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> Dict[str, float]:
         """Build and evaluate ensemble model."""
         logger.info("Building ensemble model...")
-
+        logger.debug(f"=" * 100)
         # Get the best models for ensemble
         best_models = []
         for name, model in self.models.items():
@@ -468,7 +479,7 @@ class EnhancedCreditCardDefaultDetector:
     ) -> GridSearchCV:
         """Perform grid search for hyperparameter tuning."""
         logger.info(f"Performing grid search for {type(estimator).__name__}...")
-
+        logger.debug(f"=" * 100)
         grid_search = GridSearchCV(
             estimator=estimator,
             param_grid=param_grid,
@@ -500,7 +511,7 @@ class EnhancedCreditCardDefaultDetector:
     def generate_detailed_reports(self, X_val: pd.DataFrame, y_val: pd.Series) -> None:
         """Generate detailed evaluation reports for all models."""
         logger.info("Generating detailed evaluation reports...")
-
+        logger.debug(f"=" * 100)
         for model_name, model in self.models.items():
             if hasattr(model, "predict"):
                 logger.info(f"Generating report for {model_name}...")
@@ -539,7 +550,7 @@ class EnhancedCreditCardDefaultDetector:
     def save_all_models(self) -> None:
         """Save all trained models to disk."""
         logger.info("Saving all trained models...")
-
+        logger.debug(f"=" * 100)
         for model_name, model in self.models.items():
             filepath = f"{config.MODELS_DIR}/{model_name}.joblib"
             try:
@@ -556,7 +567,7 @@ class EnhancedCreditCardDefaultDetector:
     def create_model_cards(self) -> None:
         """Create model cards for all trained models."""
         logger.info("Creating model cards...")
-
+        logger.debug(f"=" * 100)
         for model_name, model in self.models.items():
             if model_name in self.results.get("model_metrics", {}):
                 metrics = self.results["model_metrics"][model_name]

@@ -68,7 +68,7 @@ class CreditCardDefaultPipeline:
         # Create necessary directories
         utils.create_directories()
 
-        logger.info("🚀 Credit Card Default Detection Pipeline Initialized")
+        logger.info("Credit Card Default Detection Pipeline Initialized")
 
     def run_data_collection(self, force_download: bool = False) -> bool:
         """
@@ -80,28 +80,29 @@ class CreditCardDefaultPipeline:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info("📥 Starting Data Collection Phase...")
+        logger.info("Starting Data Collection Phase...")
+        logger.debug(f"=" * 100)
 
         try:
             self.data_pipeline = data_pipeline.CreditCardDataPipeline()
 
             # Check if data already exists
             if not force_download and self.data_pipeline.check_data_exists():
-                logger.info("✅ Data already exists, skipping download")
+                logger.info("Data already exists, skipping download")
                 return True
 
             # Download data
             success = self.data_pipeline.download_all_data()
 
             if success:
-                logger.info("✅ Data collection completed successfully")
+                logger.info("Data collection completed successfully")
                 return True
             else:
-                logger.error("❌ Data collection failed")
+                logger.error("Data collection failed")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error in data collection: {e}")
+            logger.error(f"Error in data collection: {e}")
             return False
 
     def run_data_preprocessing(self) -> bool:
@@ -111,15 +112,15 @@ class CreditCardDefaultPipeline:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info("🔧 Starting Data Preprocessing Phase...")
-
+        logger.info("Starting Data Preprocessing Phase...")
+        logger.debug(f"=" * 100)
         try:
             # Initialize trainer to handle data preprocessing
             self.trainer = EnhancedCreditCardDefaultDetector()
 
             # Load and preprocess data
             if not self.trainer.load_data(use_sample_data=True):
-                logger.error("❌ Failed to load data")
+                logger.error("Failed to load data")
                 return False
 
             # Perform data quality checks
@@ -131,16 +132,16 @@ class CreditCardDefaultPipeline:
             # Run data exploration
             self._run_data_exploration()
 
-            logger.info("✅ Data preprocessing completed successfully")
+            logger.info("Data preprocessing completed successfully")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error in data preprocessing: {e}")
+            logger.error(f"Error in data preprocessing: {e}")
             return False
 
     def _run_data_exploration(self):
         """Run data exploration and generate initial insights."""
-        logger.info("🔍 Running data exploration...")
+        logger.info("Running data exploration...")
 
         try:
             # Basic data info
@@ -180,13 +181,11 @@ class CreditCardDefaultPipeline:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info("🤖 Starting Model Training Phase...")
-
+        logger.info("Starting Model Training Phase...")
+        logger.debug(f"=" * 100)
         try:
             if not self.trainer:
-                logger.error(
-                    "❌ Trainer not initialized. Run data preprocessing first."
-                )
+                logger.error("Trainer not initialized. Run data preprocessing first.")
                 return False
 
             # Prepare data for training
@@ -195,7 +194,9 @@ class CreditCardDefaultPipeline:
 
             # Train models
             logger.info("Training multiple models...")
-            self.trainer.build_multiple_models(X_train, y_train, X_val, y_val)
+            self.trainer.build_multiple_models(
+                X_train, y_train, X_val, y_val, use_grid_search
+            )
 
             # Generate reports
             logger.info("Generating detailed reports...")
@@ -209,11 +210,11 @@ class CreditCardDefaultPipeline:
             logger.info("Creating model documentation...")
             self.trainer.create_model_cards()
 
-            logger.info("✅ Model training completed successfully")
+            logger.info("Model training completed successfully")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error in model training: {e}")
+            logger.error(f"Error in model training: {e}")
             return False
 
     def run_inference(self, input_data_path: Optional[str] = None) -> bool:
@@ -226,8 +227,8 @@ class CreditCardDefaultPipeline:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info("🔮 Starting Inference Phase...")
-
+        logger.info("Starting Inference Phase...")
+        logger.debug(f"=" * 100)
         try:
             # Initialize inference engine
             self.inference_engine = CreditCardDefaultInference()
@@ -241,7 +242,7 @@ class CreditCardDefaultPipeline:
 
             # Load models
             if not self.inference_engine.models:
-                logger.error("❌ No models loaded for inference")
+                logger.error("No models loaded for inference")
                 return False
 
             # Run inference on test data or provided input
@@ -258,7 +259,7 @@ class CreditCardDefaultPipeline:
 
             if predictions is not None:
                 logger.info(
-                    f"✅ Inference completed. Generated {len(predictions)} predictions"
+                    f"Inference completed. Generated {len(predictions)} predictions"
                 )
                 self.pipeline_results["inference"] = {
                     "predictions_count": len(predictions),
@@ -266,11 +267,11 @@ class CreditCardDefaultPipeline:
                 }
                 return True
             else:
-                logger.error("❌ Inference failed")
+                logger.error("Inference failed")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error in inference: {e}")
+            logger.error(f"Error in inference: {e}")
             return False
 
     def generate_report(self) -> bool:
@@ -280,8 +281,8 @@ class CreditCardDefaultPipeline:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info("📊 Generating Pipeline Report...")
-
+        logger.info("Generating Pipeline Report...")
+        logger.debug(f"=" * 100)
         try:
             report = {
                 "pipeline_timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -305,11 +306,11 @@ class CreditCardDefaultPipeline:
             with open(report_path, "w") as f:
                 json.dump(report, f, indent=2, default=str)
 
-            logger.info(f"✅ Pipeline report saved to: {report_path}")
+            logger.info(f"Pipeline report saved to: {report_path}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error generating report: {e}")
+            logger.error(f"Error generating report: {e}")
             return False
 
     def run_full_pipeline(
@@ -329,40 +330,50 @@ class CreditCardDefaultPipeline:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info("🚀 Starting Full Pipeline Execution...")
+        logger.info("Starting Full Pipeline Execution...")
         start_time = time.time()
 
         try:
             # Phase 1: Data Collection
+            logger.info("Running Data Collection Phase...")
+            logger.debug(f"=" * 100)
             if not self.run_data_collection(force_download):
                 return False
 
             # Phase 2: Data Preprocessing
+            logger.info("Running Data Preprocessing Phase...")
+            logger.debug(f"=" * 100)
             if not self.run_data_preprocessing():
                 return False
 
             # Phase 3: Model Training
+            logger.info("Running Model Training Phase...")
+            logger.debug(f"=" * 100)
             if not self.run_model_training(use_grid_search):
                 return False
 
             # Phase 4: Inference
+            logger.info("Running Inference Phase...")
+            logger.debug(f"=" * 100)
             if not self.run_inference(input_data_path):
                 return False
 
             # Phase 5: Generate Report
+            logger.info("Running Generate Report Phase...")
+            logger.debug(f"=" * 100)
             if not self.generate_report():
                 return False
 
             # Calculate execution time
             execution_time = time.time() - start_time
             logger.info(
-                f"🎉 Full pipeline completed successfully in {execution_time:.2f} seconds!"
+                f"Full pipeline completed successfully in {execution_time:.2f} seconds!"
             )
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Pipeline execution failed: {e}")
+            logger.error(f"Pipeline execution failed: {e}")
             return False
 
     def run_specific_phase(self, phase: str, **kwargs) -> bool:
@@ -384,10 +395,10 @@ class CreditCardDefaultPipeline:
         }
 
         if phase not in phase_mapping:
-            logger.error(f"❌ Unknown phase: {phase}")
+            logger.error(f"Unknown phase: {phase}")
             return False
 
-        logger.info(f"🎯 Running specific phase: {phase}")
+        logger.info(f"Running specific phase: {phase}")
         return phase_mapping[phase](**kwargs)
 
 
@@ -449,17 +460,17 @@ def main():
             )
 
         if success:
-            logger.info("🎉 Pipeline execution completed successfully!")
+            logger.info("Pipeline execution completed successfully!")
             return 0
         else:
-            logger.error("❌ Pipeline execution failed!")
+            logger.error("Pipeline execution failed!")
             return 1
 
     except KeyboardInterrupt:
-        logger.info("⏹️ Pipeline execution interrupted by user")
+        logger.info("Pipeline execution interrupted by user")
         return 1
     except Exception as e:
-        logger.error(f"❌ Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}")
         return 1
 
 
