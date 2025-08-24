@@ -7,3 +7,5 @@ from tensorflow.keras.models import Sequential
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.datasets import fetch_20newsgroups
+
+#Todo:
