@@ -103,12 +103,12 @@ The dataset contains credit card default information with the following features
 
 | Feature | Description |
 |---------|-------------|
-| X1 | Credit Line |
-| X2 | Gender (1=male, 2=female) |
-| X3 | Education (1=grad school, 2=university, 3=high school, 4=others) |
-| X4 | Marital Status (1=married, 2=single, 3=others) |
-| X5 | Age (years) |
-| X6-X11 | Payment History (months) |
+| X1      | Credit Line |
+| X2      | Gender (1=male, 2=female) |
+| X3      | Education (1=grad school, 2=university, 3=high school, 4=others) |
+| X4      | Marital Status (1=married, 2=single, 3=others) |
+| X5      | Age (years) |
+| X6-X11  | Payment History (months) |
 | X12-X17 | Bill Amounts (months) |
 | X18-X23 | Payment Amounts (months) |
 
@@ -323,75 +323,3 @@ The pipeline automatically falls back to sample data if actual data is unavailab
 - **"Data files not found"**: Check file paths or enable sample data generation
 - **"Model saving failed"**: Ensure write permissions for output directories
 - **"Import errors"**: Verify all dependencies are installed
-
-## 🔮 Future Enhancements
-
-Potential improvements for future versions:
-
-- **Deep Learning Models**: Neural networks and deep learning approaches
-- **Feature Selection**: Automated feature selection methods
-- **Cross-Validation**: More sophisticated cross-validation strategies
-- **Model Interpretability**: SHAP values and LIME explanations
-- **API Interface**: REST API for model serving
-- **Real-time Prediction**: Streaming data processing capabilities
-- **A/B Testing**: Model performance comparison in production
-
-### 🚀 Pipeline Enhancements
-
-- **Distributed Processing**: Support for distributed training across multiple machines
-- **Cloud Integration**: AWS, Azure, and GCP deployment options
-- **Monitoring Dashboard**: Real-time pipeline monitoring and alerting
-- **Automated Retraining**: Scheduled model retraining with drift detection
-- **Multi-tenant Support**: Support for multiple organizations and datasets
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
-
-### Development Setup
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👥 Authors
-
-- **ML Bootcamp** - Initial work
-
-## 🙏 Acknowledgments
-
-- Scikit-learn team for the excellent machine learning library
-- Pandas and NumPy communities for data manipulation tools
-- Matplotlib and Seaborn for visualization capabilities
-
-## 📚 Additional Resources
-
-- [Scikit-learn Documentation](https://scikit-learn.org/)
-- [Pandas Documentation](https://pandas.pydata.org/)
-- [Machine Learning Mastery](https://machinelearningmastery.com/)
-- [Towards Data Science](https://towardsdatascience.com/)
-
-### 📖 Project Documentation
-
-- **[MAIN_PIPELINE_README.md](MAIN_PIPELINE_README.md)**: Comprehensive guide to the new main pipeline
-- **[DATA_PIPELINE_README.md](../DATA_PIPELINE_README.md)**: Data pipeline documentation
-- **[config.py](config.py)**: Configuration parameters and settings
-
----
-
-## 🎯 Getting Started with the New Pipeline
-
-The new main pipeline (`main.py`) provides the easiest way to get started:
-
-1. **Quick Start**: `python main.py` - Runs the complete pipeline
-2. **Development**: `python main.py --no-grid-search` - Faster execution for testing
-3. **Examples**: `python run_example.py` - See different usage patterns
-4. **Documentation**: Check [MAIN_PIPELINE_README.md](MAIN_PIPELINE_README.md) for detailed usage
-
-**Note**: This project is designed for educational and research purposes. Always validate models on your specific data and use cases before deploying to production.

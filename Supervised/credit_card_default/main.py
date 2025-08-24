@@ -10,8 +10,6 @@ to inference, including:
 4. Model inference and prediction
 5. Results visualization and analysis
 
-Author: ML Bootcamp
-Date: 2024
 """
 
 import os
