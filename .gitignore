@@ -109,3 +109,10 @@ site/
 # Tensorboard
 tensorboard/
 runs/
+
+
+plots/
+
+
+*.json
+*.joblib
