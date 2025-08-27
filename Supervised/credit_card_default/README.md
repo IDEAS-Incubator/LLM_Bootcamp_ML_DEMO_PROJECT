@@ -2,7 +2,7 @@
 
 A comprehensive machine learning project for detecting credit card defaults using various classification algorithms. This project demonstrates best practices in machine learning pipeline development, from data exploration to model deployment.
 
-## 🎯 Project Overview
+## Project Overview
 
 This project implements a complete machine learning pipeline for credit card default detection, including:
 
@@ -12,31 +12,31 @@ This project implements a complete machine learning pipeline for credit card def
 - **Model Evaluation**: Detailed performance metrics and visualizations
 - **Production Ready**: Well-structured, documented, and maintainable code
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Supervised/
 ├── credit_card_default/
-│   ├── main.py                         # 🚀 Main pipeline orchestrator (NEW!)
-│   ├── run_example.py                  # Example usage scripts (NEW!)
+│   ├── main.py                         # Main pipeline orchestrator
+│   ├── run_example.py                  # Example usage scripts
 │   ├── train.py                        # Model training module
 │   ├── inference.py                    # Model inference module
 │   ├── data_pipeline.py                # Data collection and download
 │   ├── utils.py                        # Utility functions
 │   ├── config.py                       # Configuration parameters
-│   ├── requirements.txt                 # Python dependencies
+│   ├── requirements.txt                # Python dependencies
 │   ├── README.md                       # This file
-│   ├── MAIN_PIPELINE_README.md         # Main pipeline documentation (NEW!)
+│   ├── MAIN_PIPELINE_README.md         # Main pipeline documentation
 │   ├── plots/                          # Generated visualizations
 │   ├── models/                         # Saved trained models
 │   ├── results/                        # Analysis results and reports
 │   └── data/                           # Downloaded data files
-├── credit_card_default_detection.py     # Basic implementation
-├── credit_card_default_enhanced.py      # Enhanced version with advanced features
+├── credit_card_default_detection.py    # Basic implementation
+├── credit_card_default_enhanced.py     # Enhanced version with advanced features
 └── DATA_PIPELINE_README.md             # Data pipeline documentation
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install Dependencies
 
@@ -78,7 +78,7 @@ python train.py
 python inference.py
 ```
 
-## 📊 Data Description
+## Data Description
 
 The dataset contains credit card default information with the following features:
 
@@ -110,7 +110,7 @@ The dataset contains credit card default information with the following features
 - **1-9**: Delay 1-9 months
 
 
-### 🚀 New: Unified Main Pipeline
+### New: Unified Main Pipeline
 
 - **End-to-End Automation**: Complete pipeline from data collection to inference
 - **Flexible Execution**: Run full pipeline or specific phases independently
@@ -139,7 +139,7 @@ The dataset contains credit card default information with the following features
 - **Logging**: Comprehensive logging throughout the pipeline
 - **Error Handling**: Robust error handling and validation
 
-## 📈 Model Performance
+## Model Performance
 
 The project evaluates models using multiple metrics:
 
@@ -149,7 +149,7 @@ The project evaluates models using multiple metrics:
 - **F1-Score**: Harmonic mean of precision and recall
 - **ROC-AUC**: Area under the receiver operating characteristic curve
 
-## 🎨 Visualizations
+## Visualizations
 
 Automatically generated visualizations include:
 
@@ -161,7 +161,7 @@ Automatically generated visualizations include:
 - **ROC Curves**: Model performance curves
 - **Feature Importance**: Top features for tree-based models
 
-## ⚙️ Configuration
+## Configuration
 
 All project parameters are centralized in `config.py`:
 
@@ -171,9 +171,9 @@ All project parameters are centralized in `config.py`:
 - Cross-validation parameters
 - Feature descriptions and mappings
 
-## 🔄 Usage Examples
+## Usage Examples
 
-### 🚀 New: Main Pipeline Usage (Recommended)
+### New: Main Pipeline Usage (Recommended)
 
 ```python
 from main import CreditCardDefaultPipeline
@@ -216,7 +216,7 @@ python main.py --mode inference --input-data new_data.csv
 ```
 
 
-## 🧪 Testing
+## Testing
 
 The project includes sample data generation for testing:
 
@@ -229,7 +229,7 @@ print(f"Sample training data shape: {train_data.shape}")
 print(f"Sample test data shape: {test_data.shape}")
 ```
 
-### 🚀 New: Pipeline Testing
+### New: Pipeline Testing
 
 Test the main pipeline with examples:
 
@@ -243,7 +243,7 @@ python main.py --mode preprocessing --no-grid-search
 
 The pipeline automatically falls back to sample data if actual data is unavailable, making it perfect for testing and development.
 
-## 📝 Output Files
+## Output Files
 
 ### Generated Directories
 
@@ -263,7 +263,7 @@ The pipeline automatically falls back to sample data if actual data is unavailab
   - `{model_name}_model_card.md`: Model documentation
 - **Visualizations**: Various plots including confusion matrices, ROC curves, etc.
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
