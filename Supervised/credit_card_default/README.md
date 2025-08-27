@@ -78,16 +78,6 @@ python train.py
 python inference.py
 ```
 
-### 4. Legacy Scripts (Still Available)
-
-```bash
-# Basic version
-python credit_card_default_detection.py
-
-# Enhanced version
-python credit_card_default_enhanced.py
-```
-
 ## 📊 Data Description
 
 The dataset contains credit card default information with the following features:
@@ -119,7 +109,6 @@ The dataset contains credit card default information with the following features
 - **0**: Pay on time
 - **1-9**: Delay 1-9 months
 
-## 🔧 Features
 
 ### 🚀 New: Unified Main Pipeline
 
@@ -226,41 +215,6 @@ python main.py --force-download
 python main.py --mode inference --input-data new_data.csv
 ```
 
-### Legacy: Basic Usage
-
-```python
-from credit_card_default_detection import CreditCardDefaultDetector
-
-# Initialize detector
-detector = CreditCardDefaultDetector()
-
-# Load data
-detector.load_data()
-
-# Run analysis
-detector.perform_data_quality_check()
-detector.identify_variable_types()
-
-# Build and evaluate models
-X_train, y_train, X_val, y_val = detector.prepare_data()
-baseline_metrics = detector.build_baseline_model(X_train, y_train, X_val, y_val)
-```
-
-### Legacy: Advanced Usage
-
-```python
-from credit_card_default_enhanced import EnhancedCreditCardDefaultDetector
-
-# Initialize enhanced detector
-detector = EnhancedCreditCardDefaultDetector()
-
-# Run complete pipeline
-results = detector.run_complete_pipeline(use_sample_data=True)
-
-# Access results
-print(f"Model metrics: {results['model_metrics']}")
-print(f"Analysis results: {results['analysis_results']}")
-```
 
 ## 🧪 Testing
 
