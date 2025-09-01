@@ -10,6 +10,8 @@ to inference, including:
 4. Model inference and prediction
 5. Results visualization and analysis
 
+Author: ML Bootcamp
+Date: 2024
 """
 
 import os
@@ -182,9 +184,21 @@ class CreditCardDefaultPipeline:
         logger.info("Starting Model Training Phase...")
         logger.debug(f"=" * 100)
         try:
+            # Initialize trainer if not already done
             if not self.trainer:
-                logger.error("Trainer not initialized. Run data preprocessing first.")
-                return False
+                logger.info("Initializing trainer for training phase...")
+                self.trainer = EnhancedCreditCardDefaultDetector()
+
+                # Load and preprocess data
+                if not self.trainer.load_data(use_sample_data=True):
+                    logger.error("Failed to load data")
+                    return False
+
+                # Perform data quality checks
+                self.trainer.perform_data_quality_check()
+
+                # Identify variable types
+                self.trainer.identify_variable_types()
 
             # Prepare data for training
             logger.info("Preparing data for training...")
@@ -397,7 +411,26 @@ class CreditCardDefaultPipeline:
             return False
 
         logger.info(f"Running specific phase: {phase}")
-        return phase_mapping[phase](**kwargs)
+
+        # Filter kwargs based on the specific phase
+        if phase == "data_collection":
+            # Only pass force_download to data_collection
+            filtered_kwargs = {k: v for k, v in kwargs.items() if k == "force_download"}
+        elif phase == "training":
+            # Only pass use_grid_search to training
+            filtered_kwargs = {
+                k: v for k, v in kwargs.items() if k == "use_grid_search"
+            }
+        elif phase == "inference":
+            # Only pass input_data_path to inference
+            filtered_kwargs = {
+                k: v for k, v in kwargs.items() if k == "input_data_path"
+            }
+        else:
+            # preprocessing doesn't take any additional parameters
+            filtered_kwargs = {}
+
+        return phase_mapping[phase](**filtered_kwargs)
 
 
 def main():
