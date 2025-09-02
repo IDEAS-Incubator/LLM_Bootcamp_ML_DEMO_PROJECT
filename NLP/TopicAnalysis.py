@@ -19,7 +19,7 @@ def extract_topics(text, num_topics=3):
     """
 
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # or "gpt-4"
+        model="gpt-4o",  # or "gpt-4"
         messages=[
             {
                 "role": "system",

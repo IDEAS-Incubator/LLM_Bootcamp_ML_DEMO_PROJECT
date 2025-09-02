@@ -32,7 +32,7 @@ def analyze_sentiment(text):
 
         # Call OpenAI's completion endpoint
         response = client.completions.create(
-            model="text-davinci-003",
+            model="gpt-4o",
             prompt=prompt,
             max_tokens=10,  # Short response for classification
             temperature=0,  # Ensure deterministic output
