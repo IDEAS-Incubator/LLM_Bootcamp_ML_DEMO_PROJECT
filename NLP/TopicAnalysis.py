@@ -1,7 +1,14 @@
-import openai
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
 
-# Set your OpenAI API key
-openai.api_key = "your-api-key"
+load_dotenv()
+
+your_api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize OpenAI client
+client = OpenAI(api_key=your_api_key)
+
 
 def extract_topics(text, num_topics=3):
     prompt = f"""
@@ -11,16 +18,20 @@ def extract_topics(text, num_topics=3):
     Text: \"\"\"{text}\"\"\"
     """
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",  # or "gpt-4"
         messages=[
-            {"role": "system", "content": "You are a helpful assistant who extracts key topics."},
-            {"role": "user", "content": prompt}
+            {
+                "role": "system",
+                "content": "You are a helpful assistant who extracts key topics.",
+            },
+            {"role": "user", "content": prompt},
         ],
-        temperature=0.3
+        temperature=0.3,
     )
 
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
+
 
 # Example usage
 sample_text = """
