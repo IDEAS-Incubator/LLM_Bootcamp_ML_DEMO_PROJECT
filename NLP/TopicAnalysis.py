@@ -1,16 +1,17 @@
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-your_api_key = os.getenv("OPENAI_API_KEY")
-
-# Initialize OpenAI client
-client = OpenAI(api_key=your_api_key)
+import ollama
 
 
-def extract_topics(text, num_topics=3):
+def extract_topics(text: str, num_topics: int = 3) -> str:
+    """
+    Extracts main topics from the given text using Qwen2.5 via Ollama.
+
+    Args:
+        text (str): Input text.
+        num_topics (int): Number of topics to extract.
+
+    Returns:
+        str: Extracted topics as a simple list.
+    """
     prompt = f"""
     Extract {num_topics} main topics from the following text. 
     Return the result as a simple list of topics:
@@ -18,8 +19,8 @@ def extract_topics(text, num_topics=3):
     Text: \"\"\"{text}\"\"\"
     """
 
-    response = client.chat.completions.create(
-        model="gpt-4o",  # or "gpt-4"
+    response = ollama.chat(
+        model="qwen2.5:latest",
         messages=[
             {
                 "role": "system",
@@ -27,19 +28,20 @@ def extract_topics(text, num_topics=3):
             },
             {"role": "user", "content": prompt},
         ],
-        temperature=0.3,
     )
 
-    return response.choices[0].message.content
+    return response["message"]["content"].strip()
 
 
 # Example usage
-sample_text = """
-OpenAI has released several groundbreaking models in recent years, including GPT-3 and GPT-4. These models are used 
-in a variety of applications such as chatbots, document summarization, code generation, and customer support. 
-Researchers are exploring ways to reduce hallucinations, improve factual accuracy, and enhance fine-tuning methods.
-"""
+if __name__ == "__main__":
+    sample_text = """
+    OpenAI has released several groundbreaking models in recent years, including GPT-3 and GPT-4. 
+    These models are used in a variety of applications such as chatbots, document summarization, 
+    code generation, and customer support. Researchers are exploring ways to reduce hallucinations, 
+    improve factual accuracy, and enhance fine-tuning methods.
+    """
 
-topics = extract_topics(sample_text)
-print("Extracted Topics:")
-print(topics)
+    topics = extract_topics(sample_text)
+    print("Extracted Topics:")
+    print(topics)
