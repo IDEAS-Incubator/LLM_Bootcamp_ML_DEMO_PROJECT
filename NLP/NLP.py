@@ -9,6 +9,7 @@ import numpy as np
 
 # Download necessary NLTK datasets
 nltk.download("punkt")
+nltk.download("punkt_tab")
 
 # Sample text
 document = "Natural language processing (NLP) is a field of AI that helps machines understand human language. NLP is used in various applications like sentiment analysis, machine translation, and text summarization."
